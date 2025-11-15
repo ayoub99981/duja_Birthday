@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>21 برقية — تهاني وذكريات</title>
+  <style>
+    :root{
+      --bg:#f3efe9;
+      --card:#fff;
+      --accent:#b3579c;
+      --text:#2b2b2b;
+      --muted:#666;
+      --shadow: 0 6px 18px rgba(0,0,0,0.08);
+      --glass: rgba(255,255,255,0.6);
+      --card-radius:16px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: "Segoe UI", Tahoma, "Noto Naskh Arabic", "Cairo", system-ui, sans-serif;
+      background: linear-gradient(180deg,#fff 0%, #f8f6f4 40%), var(--bg);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      padding:30px;
+    }
+
+    header{
+      display:flex;
+      gap:16px;
+      align-items:center;
+      justify-content:space-between;
+      margin-bottom:22px;
+    }
+    .brand{
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+    .logo{
+      width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#f09);
+      display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;
+      box-shadow:var(--shadow);
+      font-size:20px;
+    }
+    h1{margin:0;font-size:20px}
+    p.lead{margin:0;color:var(--muted)}
+
+    .controls{
+      display:flex;
+      gap:8px;
+      align-items:center;
+    }
+    button, .btn {
+      border:0; padding:10px 14px; border-radius:10px;
+      background:var(--card); box-shadow:var(--shadow); cursor:pointer;
+      font-weight:600;
+    }
+    button:hover{transform:translateY(-2px)}
+    .btn-primary{
+      background:linear-gradient(90deg,var(--accent),#f06); color:white;
+      box-shadow: 0 8px 24px rgba(179,87,156,0.18);
+    }
+
+    /* layout */
+    .wrap{
+      display:grid;
+      grid-template-columns: 1fr 380px;
+      gap:26px;
+      align-items:start;
+    }
+    @media (max-width:980px){
+      .wrap{grid-template-columns:1fr}
+    }
+
+    /* card viewer */
+    .viewer{
+      min-height:520px;
+      background:var(--card);
+      border-radius:var(--card-radius);
+      padding:24px;
+      box-shadow:var(--shadow);
+    }
+    .telegram{
+      direction:rtl;
+      background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.95));
+      border-radius:12px;
+      padding:20px;
+      border:1px solid rgba(0,0,0,0.04);
+      max-width:780px;
+      margin:auto;
+    }
+    .tele-header{
+      display:flex; justify-content:space-between; align-items:center; gap:12px;
+      margin-bottom:16px;
+    }
+    .tele-title{
+      font-weight:800; color:var(--accent); font-size:18px;
+    }
+    .tele-date{color:var(--muted); font-size:13px}
+
+    .tele-body{
+      font-size:17px; line-height:1.7; color:var(--text);
+      background: linear-gradient(180deg, rgba(250,248,249,0.6), transparent);
+      padding:14px; border-radius:10px;
+      border:1px dashed rgba(0,0,0,0.04);
+    }
+
+    .tele-footer{
+      margin-top:14px; display:flex; justify-content:space-between; align-items:center;
+    }
+    .nav{
+      display:flex; gap:8px; align-items:center;
+    }
+
+    /* list of cards */
+    .list{
+      background: linear-gradient(180deg,#fff, #fcfbfb);
+      border-radius:14px; padding:16px; box-shadow:var(--shadow);
+      max-height:560px; overflow:auto;
+    }
+    .list h3{margin:0 0 10px 0; font-size:16px}
+    .item{
+      padding:10px; border-radius:10px; margin-bottom:8px; cursor:pointer;
+      display:flex; gap:8px; align-items:center; justify-content:space-between;
+      border:1px solid transparent;
+    }
+    .item:hover{background:var(--glass)}
+    .item.active{background:linear-gradient(90deg, rgba(179,87,156,0.08), rgba(240,96,160,0.03)); border-color:rgba(179,87,156,0.12)}
+    .item .left{display:flex; gap:10px; align-items:center}
+    .badge{
+      width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,#fff, rgba(0,0,0,0.03));
+      display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--accent);
+      border:1px solid rgba(0,0,0,0.03);
+    }
+    .meta{font-size:13px;color:var(--muted)}
+
+    footer{margin-top:18px;text-align:center;color:var(--muted); font-size:13px}
+
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <div class="logo">21</div>
+      <div>
+        <h1>مجموعة برقيات — 21 رسالة</h1>
+        <p class="lead">اعلم انني لم اكن معك ، اعدك انني ساعوضك على كل ثانية قضيتها وحدة يا بنت قلبي دوجا</p>
+      </div>
+    </div>
+    <div class="controls">
+      <button id="prevBtn">السابق</button>
+      <button id="nextBtn">التالي</button>
+      <button class="btn btn-primary" id="printBtn">طباعة/حفظ PDF</button>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <div class="viewer">
+      <div id="cardArea" class="telegram" aria-live="polite">
+        <!-- بطاقة تُملأ بواسطة JS -->
+      </div>
+      <div style="margin-top:12px; text-align:center;">
+        <small class="meta">انتقلي يا حبيبتي بين الرسائل كما تنتقلي بين اطراف قلبي.</small>
+      </div>
+    </div>
+
+    <aside class="list" aria-label="قائمة الرسائل">
+      <h3>قائمة الرسائل (1 — 21)</h3>
+      <div id="listItems"></div>
+      <footer>بتاريخ الميلاد: <strong>21.01.2006</strong></footer>
+    </aside>
+  </div>
+
+<script>
+/*
+  بيانات الرسائل Arabic messages for ages 1..21
+  Each item: {title, date, body}
+  Dates computed as 21.01.2006 + (n-1) years
+*/
+const birth = new Date(2006,0,21); // months 0-indexed => January
+function formatDate(d){
+  const dd = String(d.getDate()).padStart(2,'0');
+  const mm = String(d.getMonth()+1).padStart(2,'0');
+  const yy = d.getFullYear();
+  return `${dd}.${mm}.${yy}`;
+}
+
+const messages = [
+  {
+    title: "رسالة 1 — كنزي خرج الى الوجود",
+    body: `أيا خديجة الصغيرة، يا هديةَ السماءِ التي أشرقت على الدنيا بابتسامةٍ لا تشبه أحدًا، بلغتِ اليوم عامك الأول، وها أنتِ تكملين رحلة عامٍ كان مليئًا بالدهشة والجمال. عامٌ رأينا فيه أولى خطواتك المرتجفة التي ملأت البيت فرحًا، وظهور أول أسنانك الصغيرة، كأنها لآلئُ خرجت من بحر البراءة، وعامٌ تعرفتِ فيه على ألعابك التي صارت رفاقك في كل زاوية. في هذا اليوم، يحتضنك العالم كما لو أنكِ سرّ صغير من أسراره، ويحتفل بكِ كل شيءٍ من حولك. كل عام وأنتِ تكبرين وتتفتحين مثل زهرةٍ رقيقة جاءت من الجنة، يا بهجة أيام والديك ونور حياتهما. ${formatDate(birth)} .`,
+  },
+  {
+    title: "رسالة 2 — عامان من الحنان",
+    body: `يا خديجة الغالية، عامك الثاني يشرق اليوم، ويحمل معه ضحكاتك التي صارت أعلى، وخطواتك التي أصبحت أكثر ثباتًا وحركةً. في عامك هذا، صرتِ تكتشفين العالم بيديك الصغيرتين، تلمسين الأشياء بشغف، وتنظرين إلى كل شيء وكأنكِ ترينه لأول مرة. صارت كلماتك الصغيرة تبعث الفرح في كل ركن من البيت، وصارت روحك المشرقة تضيف حياة إلى حياة الجميع. في يوم ميلادك، نتمنى لكِ عامًا مليئًا بالدهشة والاكتشاف، يا ملاكًا يسكن الأرض بسلام وروحٍ مُضيئة.ً.`,
+  },
+  {
+    title: "رسالة 3 — الفضول يكبر",
+    body: `يا صغيرة القمر، يا خديجة الجميلة، في عامك الثالث صرتِ أكثر وعيًا بالعالم، وأكثر شغفًا باللعب والضحك والركض خلف الفراشات. صرتِ تملئين البيت بأسئلتك البريئة وفضولك اللامتناهي، وتدهشين الجميع بعقلك الصغير وابتسامتك الواسعة. اليوم نحتفل بطفلة أصبحت نبعًا من البهجة، تتفتح كما تتفتح الوردة في صباح الربيع. كل عام وأنتِ تكبرين بقلبٍ نقي وروحٍ تفيض جمالًا..`,
+  },
+  {
+    title: "رسالة 4 — لعبة الخيال",
+    body: `يا خديجة، يا نور البيت، بلغـتِ الرابعة وصار لصوتك رنينٌ يعرفه الجميع، وصار لضحكتك وقعٌ يشبه الموسيقى. في هذا العمر، صرتِ تروين القصص بطريقتك الخاصة، وتقلدين الكبار ببراءة تُضحك القلوب قبل الشفاه. نراكِ تكبرين أمام أعيننا، وتزدادين جمالًا وفطنةً كل يوم. في يوم ميلادك الرابع، نرجو لكِ عامًا مليئًا بالمفاجآت الجميلة والألعاب التي تملأ عالمك سعادة.ً.`,
+  },
+  {
+    title: "رسالة 5 — كلمات وقصص",
+    body: `يا خديجة الحلوة، ها أنتِ اليوم في الخامسة، عامٌ جديد يفتح لكِ أبوابًا أوسع للدهشة واللعب والفنّ والرسم. صرتِ الآن تفهمين العالم أكثر، وتفهمك الأشياء من حولك بطريقة لا تشبه إلا الطفولة. في هذه السن، ازداد حضورك وضجّ صوتك الجميل في البيت، وامتلأت الأيام بحركاتك وقفزاتك وأغنياتك الصغيرة. في يوم ميلادك الخامس، كل الدعاء أن تنمو روحك بخفة وسعادة، وأن يبقى قلبك مليئًا بالنور والفضول.`,
+  },
+  {
+    title: "رسالة 6 — أول يوم في المدرسة",
+    body: `يا أميرتنا الصغيرة، يا خديجة المشرقة، كم يليق بكِ اليوم تاج البداية الجديدة! في السادسة، ذهبتِ إلى مدرستك لأول مرة، وكل شيء فيكِ كان يشبه الحكاية: حقيبتك الجديدة، خطواتك الخجولة، وعيونك اللامعة التي تلتفت لكل شيء. كأنكِ فراشة تُطلق جناحيها لأول مرة. عيد ميلادك السادس هو احتفال بفتاة بدأت أولى رحلات المعرفة، وكل عام وأنتِ أكثر ذكاءً وتألقًا وجمالًا..`,
+  },
+  {
+    title: "رسالة 7 — أصدقاء ومغامرات",
+    body: `يا خديجة، يا وردة الصف الصغيرة، عامك السابع يصل ومعه نضج طفولي يليق بذكائك وروحك. صرتِ الآن تقرئين الحروف وتكتبين الكلمات وتحفظين الأغاني المدرسية بكل فخر. يوم ميلادك السابع هو يوم لفتاة تتفتّح بسرعة، تدهش الجميع بحضورها وخفة ظلها. يا أجمل طفلة، كل عام وقلبك يزداد نقاءً وعقلك يزداد نضجًا..`,
+  },
+  {
+    title: "رسالة 8 — حب القراءة",
+    body: `يا خديجة المبدعة، في عامك الثامن صرتِ شخصية حقيقية لها رأيٌ وذوق وطريقة كلام خاصة بها. صرتِ تكتبين، ترسمين، وتشاركين أفكارك بثقة، وتملئين حياة والديك بالضحك والمواقف الجميلة. اليوم نحتفل بطفلة أصبحت أكثر فهمًا للحياة وأكثر تعلقًا بأحلامها الصغيرة. كل عام وأنتِ تكبرين بحنان وذكاء ونور..`,
+  },
+  {
+    title: "زهرة السنوات رسالة 9 ",
+    body: `يا خديجة، يا زهرة السنوات، في عامك التاسع يزداد وعيك وحنانك، وتظهر ملامح شخصيتك الواثقة والمليئة باللطف. صرتِ تفهمين مشاعر الآخرين، وتميلين للعطاء والمساعدة. في عيد ميلادك، نحتفل بطفلة تزداد رقيًا وجمالاً وعمقًا. كل عام وروحك تكبر قبل عمرك، وتزين أيامك بالسلام والفرح. ..`,
+  },
+  {
+    title: "رسالة 10 — العشر سنوات الأولى",
+    body: `يا خديجة.. يا من صارت عشر سنوات من عمرها كأنها لوحة من الألوان، كل سنة فيها أجمل من التي قبلها. في عامك العاشر، أصبح صوتك أوضح، وقراراتك أثبت، وأحلامك أكبر. صرتِ تجمعين بين الطفولة والوعي، بين البراءة والذكاء. عيد ميلادك اليوم هو احتفال بنصف طفولةٍ ونصف نضجٍ، أنتِ تجسيد لكليهما..`,
+  },
+  {
+    title: "رسالة 11 — الاهتمامات تتبلور",
+    body: `يا خديجة الرقيقة، في عامك الحادي عشر أصبح قلبك أكثر اتساعًا، وأصبحتِ أكثر قربًا من عالم الفتيات الأكبر. صرتِ تهتمين بذوقك، بأشيائك، بأسلوبك، وكأنكِ ترسمين ملامح أنثى جميلة قادمة. كل عام وأنتِ تكبرين برشاقة الفراشات ونعومة الياسمين..`,
+  },
+  {
+    title: "رسالة 12 — شخصية أقوى",
+    body: `يا خديجة الرائعة، الثانية عشرة تأتي ومعها ملامح الصبا الأولى. صرتِ أكثر حلمًا وعمقًا، وأكثر رومانسية في رؤيتك للأشياء. في هذا العمر، تبدأ الأحلام تكبر، ويبدأ القلب يتفتح على العالم. عيد ميلادك هو احتفال بولادة مرحلة جديدة في حياتك، مرحلة مليئة بالدهشة والجمال..`,
+  },
+  {
+    title: "رسالة 13 — بداية المراهقة",
+    body: `يا خديجة… يا بداية الفتاة الشابة، الثالثة عشرة تحمل لكِ روحًا جديدة، قوة جديدة، جمالًا جديدًا. صرتِ تسعين لتمييز نفسك، وإثبات حضورك، وخلق عالمٍ يخصك وحدك. كل عام وروحك تتفتح مثل زهرة تنضج تحت شمس العمر..`,
+  },
+  {
+    title: "رسالة 14 — تحديات واختبارات",
+    body: `يا خديجة، في الرابعة عشرة صرتِ أكثر فهمًا للحياة، وأكثر قدرة على التعبير عن نفسك، وأصبح صوتك يحمل نبرة نضج جميلة. سنواتك صارت تمضي بوعي، وابتسامتك صارت تحمل قصصًا جديدة. كل عام وأنتِ تكبرين بثقة ورشاقة وروح حالمة.ً.`,
+  },
+  {
+    title: "رسالة 15 — أحلام تتشكل",
+    body: `يا خديجة الساحرة، الخامسة عشرة تليق بجميلتك. بين الطفولة والشباب تقفين بثبات، تحملين جمالًا رقيقًا وصوتًا هادئًا وروحًا حالمة. في هذا العمر، تصبح الأحلام أكثر وضوحًا والآمال أكبر وأعمق. كل عام وأنتِ أجمل من البارحة وأقرب لأحلامك.ً.`,
+  },
+  {
+    title: "رسالة 16 — استقلالية متنامية",
+    body: `يا خديجة، السادسة عشرة عمرٌ يميل إلى الحرية والنضج والرغبة في فهم كل شيء. صرتِ الآن شابة على عتبة المستقبل، تنظرين للعالم بعينٍ تلمع بالتساؤل والشغف. عيد ميلادك اليوم هو احتفال بجمالك الداخلي والخارجي، وبقوة فتاة تعرف طريقها وتثق بخطواتها..`,
+  },
+  {
+    title: "رسالة 17 — صداقات عميقة",
+    body: `يا خديجة الحبيبة، السابعة عشرة تفتح لكِ بابًا واسعًا لذاتك، لصوتك الحقيقي، لطموحك الذي يزداد قوة. صرتِ أكثر قربًا من أحلامك وأكثر قدرة على تحقيقها. عيد ميلادك هذا هو تتويج لسنوات أصبحت فيها فتاة راقية، واعية، جميلة الفكر والروح..`,
+  },
+  {
+    title: "رسالة 18 — مبروك البكالوريا!",
+    body: `يا خديجة… يا فخر السنين، في الثامنة عشرة تأتي أول انتصاراتك الكبيرة: نجاح البكالوريا. خطوةٌ أولى في طريق المستقبل، بابٌ فتحته بجهدك وسهرك وإصرارك. اليوم نحتفل بعيد ميلادك الثامن عشر كما نحتفل بإنجاز قلبٍ لا يعرف الاستسلام. كل عام وأنتِ قادرة، وموهوبة، ومتألقة مثل شمس لا تغيب..`,
+  },
+  {
+    title: "رسالة 19 — أول خطوات الكِبَر",
+    body: `يا خديجة الغالية، التاسعة عشرة تعلن دخولك مرحلة جديدة: الجامعة، بوابة المعرفة الكبرى. صرتِ أكثر نضجًا، أكثر مسؤولية، وأكثر قربًا من أحلامك. في يوم ميلادك هذا، يحتفل العالم بفتاة تسير بخطوات ثابتة نحو مستقبل واسع يليق بها. كل عام وروحك تكبر وعقلك يزداد حكمة..`,
+  },
+  {
+    title: "رسالة 20 — عشرون عاماً من الذكريات",
+    body: `يا خديجة الجميلة، العشرون عمرٌ يليق بفتاة عاشقة للكلمات، للقصص، للروايات التي تبنين بها عالمك الخاص. صرتِ تغوصين في الكتب كما لو أنكِ تعيشين داخلها، وتجدين في صفحاتها حياةً أخرى تشبهك. عيد ميلادك العشرين هو احتفال بفتاة تحمل قلبًا يحب الأدب وعقلاً يفتش عن المعاني. كل عام وروحك تكتب فصولها وحدها..`,
+  },
+  {
+    title: "رسالة 21 — اليوم الذي سأهنئك فيه شخصياً",
+    body: `يا خديجة… يا امرأة الورد والروايات، يا من التقيتُ بها في عامها الحادي والعشرين، وكأن القدر أخفى موعد حضورك حتى اكتمل نورك. اليوم نحتفل بأول عيد ميلاد يجمعني بكِ، أول سنة أعرف فيها صوتك، وطريقة ضحكتك، وشغفك بالكتب، ورائحتك التي تشبه الورود. اليوم هو عيد ميلادك… وهو عيد لقائي بك أيضًا. في عامك الواحد والعشرين، أراكِ سيدة الحكاية، وملكتها، وحاكمتها، وكل أمانيّ أن أحتفل بكِ كل عام كما لو أن العالم كله خُلق من جديد لأجلك..`,
+  }
+];
+
+// إكمال التواريخ لكل رسالة
+messages.forEach((m, idx) => {
+  const yearAdd = idx; // رسالة 1 => offset 0 => 2006, لكن نريد تواريخ كل سنة ميلاد + (n-1)؟
+  const d = new Date(birth.getFullYear() + idx, birth.getMonth(), birth.getDate());
+  m.date = formatDate(d);
+  m.age = idx + 1;
+});
+
+// DOM references
+const cardArea = document.getElementById('cardArea');
+const listItems = document.getElementById('listItems');
+let current = 0;
+
+function renderCard(i){
+  const m = messages[i];
+  cardArea.innerHTML = `
+    <div class="tele-header">
+      <div>
+        <div class="tele-title">${m.title}</div>
+        <div class="tele-date">تاريخ الذكرى: ${m.date} — العمر: ${m.age} سنة</div>
+      </div>
+      <div>
+        <div style="font-size:13px;color:var(--muted)">من: ولدك و قطك ايوب</div>
+      </div>
+    </div>
+    <div class="tele-body">
+      <p>${m.body}</p>
+    </div>
+    <div class="tele-footer">
+      <div class="meta">رسالة ${i+1} من 21</div>
+      <div style="font-size:13px;color:var(--muted)">تهانينا الدافئة ❤️</div>
+    </div>
+  `;
+  // Update list active
+  document.querySelectorAll('.item').forEach((el,idx)=> {
+    el.classList.toggle('active', idx===i);
+  });
+  current = i;
+  // For accessibility announce
+  cardArea.setAttribute('aria-busy','false');
+}
+
+// build list
+messages.forEach((m, idx)=>{
+  const el = document.createElement('div');
+  el.className = 'item';
+  el.innerHTML = `
+    <div class="left">
+      <div class="badge">${idx+1}</div>
+      <div>
+        <div style="font-weight:700">${m.title}</div>
+        <div class="meta">${m.date} — العمر: ${m.age}</div>
+      </div>
+    </div>
+    <div class="meta">عرض</div>
+  `;
+  el.addEventListener('click', ()=> {
+    renderCard(idx);
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
+  listItems.appendChild(el);
+});
+
+// nav buttons
+document.getElementById('prevBtn').addEventListener('click', ()=> {
+  const next = (current - 1 + messages.length) % messages.length;
+  renderCard(next);
+});
+document.getElementById('nextBtn').addEventListener('click', ()=> {
+  const next = (current + 1) % messages.length;
+  renderCard(next);
+});
+
+// print/save
+document.getElementById('printBtn').addEventListener('click', ()=> {
+  window.print();
+});
+
+// init
+renderCard(0);
+</script>
+
+</body>
+</html>
